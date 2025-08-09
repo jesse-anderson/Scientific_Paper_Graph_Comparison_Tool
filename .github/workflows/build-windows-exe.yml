@@ -1,0 +1,82 @@
+# .github/workflows/build-windows-exe.yml
+name: Build Windows EXE (tagged & untagged)
+
+on:
+  push:
+    branches:
+      - "**"      # run on any branch push (untagged)
+    tags:
+      - "*"       # run on any tag push (e.g., v7, v7.0.0, nightly-2025-08-09)
+  workflow_dispatch:     # manual "Run workflow" button
+
+permissions:
+  contents: write        # needed to create/update releases with GITHUB_TOKEN
+
+# Prevent overlapping runs on same ref from stepping on each other
+concurrency:
+  group: windows-build-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Verify icon exists
+        shell: pwsh
+        run: |
+          if (-not (Test-Path 'img/app.ico')) {
+            Write-Error "Icon not found at img/app.ico. Commit your ICO or update the path in this workflow."
+            exit 1
+          }
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Show Python/Pip versions (debug)
+        shell: pwsh
+        run: |
+          python --version
+          python -m pip --version
+
+      - name: Install dependencies
+        shell: pwsh
+        run: |
+          python -m pip install --upgrade pip
+          pip install pillow mss pyinstaller
+
+      - name: Build EXE with PyInstaller
+        shell: pwsh
+        run: |
+          pyinstaller --name SciVizTool --onefile --windowed --noconfirm --clean -i img/app.ico sci_viz_tool.py
+          if (!(Test-Path "dist/SciVizTool.exe")) {
+            Write-Error "Build failed: dist/SciVizTool.exe not found."
+            exit 1
+          }
+          dir dist
+
+      # Always keep a copy as an Actions artifact (works for both tagged and untagged runs)
+      - name: Upload EXE as workflow artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: SciVizTool-${{ github.ref_type }}-${{ github.ref_name }}-${{ github.sha }}
+          path: dist/SciVizTool.exe
+          if-no-files-found: error
+          retention-days: 14
+
+      # Only attach to a GitHub Release when this run was triggered by a tag push
+      - name: Upload EXE to Release (tags only)
+        if: ${{ github.ref_type == 'tag' }}
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/SciVizTool.exe
+          tag_name: ${{ github.ref_name }}     # attach to the current tag (e.g., v7)
+          generate_release_notes: true         # creates a release if one doesn't exist
+          fail_on_unmatched_files: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
