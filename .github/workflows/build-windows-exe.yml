@@ -1,35 +1,33 @@
-# .github/workflows/build-windows-exe.yml
-name: Build Windows EXE (tagged & untagged)
+name: Build Windows EXE on Release
 
 on:
-  push:
-    branches:
-      - "**"      # run on any branch push (untagged)
-    tags:
-      - "*"       # run on any tag push (e.g., v7, v7.0.0, nightly-2025-08-09)
-  workflow_dispatch:     # manual "Run workflow" button
+  release:
+    # Runs when you click "Publish release" in the UI (includes pre-releases).
+    # Draft creation/edits won't trigger this.
+    types: [published]
 
 permissions:
-  contents: write        # needed to create/update releases with GITHUB_TOKEN
+  contents: write  # required to upload assets with the built-in GITHUB_TOKEN
 
-# Prevent overlapping runs on same ref from stepping on each other
 concurrency:
-  group: windows-build-${{ github.ref }}
+  group: windows-build-${{ github.event.release.tag_name }}
   cancel-in-progress: true
 
 jobs:
   build-windows:
+    # Uncomment the next line if you want to SKIP pre-releases:
+    # if: ${{ !github.event.release.prerelease }}
     runs-on: windows-latest
 
     steps:
-      - name: Check out code
+      - name: Check out code at the release tag
         uses: actions/checkout@v4
 
       - name: Verify icon exists
         shell: pwsh
         run: |
           if (-not (Test-Path 'img/app.ico')) {
-            Write-Error "Icon not found at img/app.ico. Commit your ICO or update the path in this workflow."
+            Write-Error "Icon not found at img/app.ico. Commit the ICO or update the path."
             exit 1
           }
 
@@ -37,12 +35,6 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
-
-      - name: Show Python/Pip versions (debug)
-        shell: pwsh
-        run: |
-          python --version
-          python -m pip --version
 
       - name: Install dependencies
         shell: pwsh
@@ -60,23 +52,12 @@ jobs:
           }
           dir dist
 
-      # Always keep a copy as an Actions artifact (works for both tagged and untagged runs)
-      - name: Upload EXE as workflow artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: SciVizTool-${{ github.ref_type }}-${{ github.ref_name }}-${{ github.sha }}
-          path: dist/SciVizTool.exe
-          if-no-files-found: error
-          retention-days: 14
-
-      # Only attach to a GitHub Release when this run was triggered by a tag push
-      - name: Upload EXE to Release (tags only)
-        if: ${{ github.ref_type == 'tag' }}
+      - name: Upload EXE to this Release
         uses: softprops/action-gh-release@v2
         with:
           files: dist/SciVizTool.exe
-          tag_name: ${{ github.ref_name }}     # attach to the current tag (e.g., v7)
-          generate_release_notes: true         # creates a release if one doesn't exist
+          tag_name: ${{ github.event.release.tag_name }}
           fail_on_unmatched_files: true
+          generate_release_notes: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
