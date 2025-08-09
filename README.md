@@ -20,7 +20,7 @@ I wanted a fast, repeatable way to compare bars or markers in figures without ey
 
     -   Control: green
 
-    -    A: red
+    -   A: red
 
     -   B: blue
 
@@ -36,19 +36,11 @@ I wanted a fast, repeatable way to compare bars or markers in figures without ey
 
 ![](img/Change_In_substrate_utilization.png)
 
-+--------------+---------+------------+---------+
-| Col1         | Raw     | Calc       | Table   |
-+==============+=========+============+=========+
-| Fat          | 63.04   | 63.04      | 63.2    |
-+--------------+---------+------------+---------+
-| Carbohydrate | 84.3    | 84.3-63.04 | 21.6    |
-|              |         |            |         |
-|              |         | =21.26     |         |
-+--------------+---------+------------+---------+
-| Protein      | 100     | 100-84.3   | 15.2    |
-|              |         |            |         |
-|              |         | =15.7      |         |
-+--------------+---------+------------+---------+
+|              | Raw   | Calc              |
+|--------------|-------|-------------------|
+| Fat          | 63.04 | 63.04             |
+| Carbohydrate | 84.3  | 84.3-63.04 =21.26 |
+| Protein      | 100   | 100-84.3 =15.7    |
 
 The above images are taken from:
 
