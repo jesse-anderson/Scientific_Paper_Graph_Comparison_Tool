@@ -38,9 +38,11 @@ I wanted a fast, repeatable way to compare bars or markers in figures without ey
 
 The above images are taken from:
 
-| [Creatine supplementation influences substrate utilization at rest](https://journals.physiology.org/doi/abs/10.1152/japplphysiol.01170.2001)
-| M. Erik Huso, Jeffrey S Hampl, Carol S. Johnston, and Pamela D. Swan
-| Journal of Applied Physiology 2002 93:6, 2018-2022
+[Creatine supplementation influences substrate utilization at rest](https://journals.physiology.org/doi/abs/10.1152/japplphysiol.01170.2001)
+
+M. Erik Huso, Jeffrey S Hampl, Carol S. Johnston, and Pamela D. Swan
+
+Journal of Applied Physiology 2002 93:6, 2018-2022
 
 *Note that you have to do some math to make sense of the stacked bar chart. When comparing multiple bar charts it works marginally better, but I'm not gonna make it more convoluted than it already is(at least for now).*
 
@@ -283,3 +285,42 @@ Bug reports and pull requests are welcome. If you find a figure that breaks the 
 ## Acknowledgments
 
 Thanks to the studies and figures that motivated building this tool. It exists so you do not have to trust your eyeballs. And markdown visual editor for making markdown so much easier..
+
+------------------------------------------------------------------------
+
+## More Use Cases
+
+In searching for even more use cases I dove(dived? delved? leaped?) into more creatine research. Note the before/after values of adding the axis marker at 1000, it allows for rough estimation of the values without needing to consult a table(if its even available).
+
+Before:
+
+![](img/Creatine_Nitrate_vs_Creatine_Mononitrate_Before_Axis.png)
+
+After:
+
+![](img/Creatine_Nitrate_vs_Creatine_Mononitrate_After_Axis.png)
+
+This is a great use case since it will let you quickly eyeball a graph. Now we can do treatment at point A vs point B as in the below:
+
+![](img/Time_A_vs_B_Treatments.png)
+
+Now we have values for plasma creatine supplementing Creatine Monohydrate at Baseline, Day 7, and Day 28 and we can eyeball the numbers. I could in theory add ±SD to a future implementation to grab the relative SD using the error bars, but for now this is just a tool for me to have to avoid eyeballing.
+
+For reference:
+
+|          | Image Tool | Study       |
+|----------|------------|-------------|
+| Baseline | 162.73     | 165.2±94.4  |
+| Day 7    | 506.56     | 504.9±422.8 |
+| Day 28   | 228.35     | 231.2±126.1 |
+
+Its close enough to get a rough percentage for sure, most especially when you are faced with a bunch of plots that have absolutely no table or the authors don't respond to your request for the raw data.
+
+Study Reference(copied from the paper):
+
+Elfego Galvan, Dillon K. Walker, Sunday Y. Simbo, Ryan Dalton, Kyle Levers,
+Abigail O’Connor, Chelsea Goodenough, Nicholas D. Barringer, Mike Greenwood, Christopher
+Rasmussen, Stephen B. Smith, Steven E. Riechman, James D. Fluckey, Peter S. Murano, Conrad
+P. Earnest & Richard B. Kreider (2016) Acute and chronic safety and efficacy of dose dependent
+creatine nitrate supplementation and exercise performance, Journal of the International
+Society of Sports Nutrition, 13:1, 12, DOI: 10.1186/s12970-016-0124-0
