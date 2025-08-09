@@ -36,6 +36,20 @@ I wanted a fast, repeatable way to compare bars or markers in figures without ey
 
 ![](img/Change_In_substrate_utilization.png)
 
++--------------+-------+------------+-------+
+| Col1         | Raw   | Calc       | Table |
++==============+=======+============+=======+
+| Fat          | 63.04 | 63.04      | 63.2  |
++--------------+-------+------------+-------+
+| Carbohydrate | 84.3  | 84.3-63.04 | 21.6  |
+|              |       |            |       |
+|              |       | =21.26     |       |
++--------------+-------+------------+-------+
+| Protein      | 100   | 100-84.3   | 15.2  |
+|              |       |            |       |
+|              |       | =15.7      |       |
++--------------+-------+------------+-------+
+
 The above images are taken from:
 
 [Creatine supplementation influences substrate utilization at rest](https://journals.physiology.org/doi/abs/10.1152/japplphysiol.01170.2001)
