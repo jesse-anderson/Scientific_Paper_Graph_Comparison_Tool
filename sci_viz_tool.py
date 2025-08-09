@@ -59,7 +59,7 @@ Notes
       height among Control/A/B (or 1 px) to avoid division by zero; the overlay
       marks this as "auto" so you know the scale came from data rather than a tick.
 """
-__version__ = "6.1.0"
+__version__ = "6.1.1"
 #TODO:
 # make a utils.py or otherwise segment this code so its more manageable.
 # I got way used to doing things all in one file then splitting later.
