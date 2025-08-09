@@ -6,29 +6,29 @@ I wanted a fast, repeatable way to compare bars or markers in figures without ey
 
 ## What it does
 
--    Capture all monitors into one image, or open a file from disk.
+-   Capture all monitors into one image, or open a file from disk.
 
--    Select a Region of Interest that can span across monitors.
+-   Select a Region of Interest that can span across monitors.
 
--    Place four analysis points: **Baseline**, **Control**, **A**, **B**.
+-   Place four analysis points: **Baseline**, **Control**, **A**, **B**.
 
--    Optional calibration: place an **Axis** tick (for example the 100 percent line) and enter its numeric value.
+-   Optional calibration: place an **Axis** tick (for example the 100 percent line) and enter its numeric value.
 
--    Draw horizontal dotted guides at each point with color coding:
+-   Draw horizontal dotted guides at each point with color coding:
 
-    -    Baseline: gray
+    -   Baseline: gray
 
-    -    Control: green
+    -   Control: green
 
     -    A: red
 
-    -    B: blue
+    -   B: blue
 
-    -    Axis: gold
+    -   Axis: gold
 
--    Always-on overlay in the upper right that fills progressively with results. Missing values show as `NA`.
+-   Always-on overlay in the upper right that fills progressively with results. Missing values show as `NA`.
 
--    Save exactly what you see. The Save button captures the current canvas view without gaps.
+-   Save exactly what you see. The Save button captures the current canvas view without gaps.
 
 ![](img/Toolbar.png)
 
@@ -36,19 +36,19 @@ I wanted a fast, repeatable way to compare bars or markers in figures without ey
 
 ![](img/Change_In_substrate_utilization.png)
 
-+--------------+-------+------------+-------+
-| Col1         | Raw   | Calc       | Table |
-+==============+=======+============+=======+
-| Fat          | 63.04 | 63.04      | 63.2  |
-+--------------+-------+------------+-------+
-| Carbohydrate | 84.3  | 84.3-63.04 | 21.6  |
-|              |       |            |       |
-|              |       | =21.26     |       |
-+--------------+-------+------------+-------+
-| Protein      | 100   | 100-84.3   | 15.2  |
-|              |       |            |       |
-|              |       | =15.7      |       |
-+--------------+-------+------------+-------+
++--------------+---------+------------+---------+
+| Col1         | Raw     | Calc       | Table   |
++==============+=========+============+=========+
+| Fat          | 63.04   | 63.04      | 63.2    |
++--------------+---------+------------+---------+
+| Carbohydrate | 84.3    | 84.3-63.04 | 21.6    |
+|              |         |            |         |
+|              |         | =21.26     |         |
++--------------+---------+------------+---------+
+| Protein      | 100     | 100-84.3   | 15.2    |
+|              |         |            |         |
+|              |         | =15.7      |         |
++--------------+---------+------------+---------+
 
 The above images are taken from:
 
@@ -64,65 +64,69 @@ Journal of Applied Physiology 2002 93:6, 2018-2022
 
 ## Requirements
 
--    Python 3.8 or later
+-   Python 3.8 or later
 
--    Packages:
+-   Packages:
 
-    -    `pillow`
+    -   `` `pillow` ``
 
-    -    `mss`
+    -   `` `mss` ``
 
--    Tkinter is required. It ships with most Python installers on Windows and many Linux distros. If you built Python from source, ensure Tk support is enabled.
+-   Tkinter is required. It ships with most Python installers on Windows and many Linux distros. If you built Python from source, ensure Tk support is enabled.
 
 Install packages:
 
-`pip install pillow mss`
+``` bash
+pip install pillow mss
+```
 
 macOS users: grant screen recording permissions to the Python app you use to run the script so screen capture works.
 
 ## Quick start
 
-1.   Download the script: `sci_viz_tool.py`
+1.  Download the script: `sci_viz_tool.py`
 
-2.   Run it:
+2.  Run it:
 
-    `python sci_viz_tool.py`
+```         
+python sci_viz_tool.py
+```
 
-3.   Click **Capture All Monitors** or **Open Image**.
+3.  Click **Capture All Monitors** or **Open Image**.
 
-4.   Optional: click **Select ROI**, then drag a rectangle over the plot area you care about.
+4.  Optional: click **Select ROI**, then drag a rectangle over the plot area you care about.
 
-5.   Click **Set Baseline** and click the chart baseline (usually the zero line).
+5.  Click **Set Baseline** and click the chart baseline (usually the zero line).
 
-6.   Optional but recommended for percent charts: click **Set Axis 100%**, enter a value (default 100), then click the 100 percent tick line.
+6.  Optional but recommended for percent charts: click **Set Axis 100%**, enter a value (default 100), then click the 100 percent tick line.
 
-7.   Click **Set Control**, **Set Marker A**, and **Set Marker B** at the tops of the bars or markers you want to compare.
+7.  Click **Set Control**, **Set Marker A**, and **Set Marker B** at the tops of the bars or markers you want to compare.
 
-8.   Read the overlay in the upper right.
+8.  Read the overlay in the upper right.
 
-9.   Click **Save Annotated** to export exactly what you see.
+9.  Click **Save Annotated** to export exactly what you see.
 
 ------------------------------------------------------------------------
 
 ## Keyboard shortcuts
 
--    `r` Select ROI
+-   `r` Select ROI
 
--    `d` Reset to Full Capture
+-   `d` Reset to Full Capture
 
--    `x` Clear Marks
+-   `x` Clear Marks
 
--    `z` Set Baseline
+-   `z` Set Baseline
 
--    `c` Set Control
+-   `c` Set Control
 
--    `a` Set Marker A
+-   `a` Set Marker A
 
--    `b` Set Marker B
+-   `b` Set Marker B
 
--    `t` Set Axis 100% (calibration)
+-   `t` Set Axis 100% (calibration)
 
--    `Esc` Cancel current mode
+-   `Esc` Cancel current mode
 
 ------------------------------------------------------------------------
 
@@ -130,26 +134,26 @@ macOS users: grant screen recording permissions to the Python app you use to run
 
 ### Coordinate model
 
--    You work on an image. This can be a frozen multi-monitor capture or any image you opened.
+-   You work on an image. This can be a frozen multi-monitor capture or any image you opened.
 
--    The canvas displays a scaled copy. Clicks on the canvas are mapped back to image coordinates.
+-   The canvas displays a scaled copy. Clicks on the canvas are mapped back to image coordinates.
 
 ### Heights
 
--    Heights are measured in pixels relative to **Baseline**.
+-   Heights are measured in pixels relative to **Baseline**.
 
--    If `baseline_y` is the y coordinate of Baseline and `top_y` is the y coordinate of a bar top, then\
+-   If `baseline_y` is the y coordinate of Baseline and `top_y` is the y coordinate of a bar top, then\
     `height_px = baseline_y - top_y`.
 
 ### Pairwise comparisons
 
 The overlay reports:
 
--    A as percent of B, B as percent of A
+-   A as percent of B, B as percent of A
 
--    A vs B delta percent (positive means A is higher than B)
+-   A vs B delta percent (positive means A is higher than B)
 
--    A vs Control and B vs Control in both directions
+-   A vs Control and B vs Control in both directions
 
 Formulas are simple ratios.
 
@@ -179,61 +183,61 @@ The overlay will show `Axis span (Baseline->Tick) (auto): ...` to indicate that 
 
 ### Compare two treatments against a control
 
-1.   Set Baseline on the zero line.
+1.  Set Baseline on the zero line.
 
-2.   Set Control on your control bar top.
+2.  Set Control on your control bar top.
 
-3.   Set A and B on treatment bars.
+3.  Set A and B on treatment bars.
 
-4.   Read A vs Control, B vs Control, and A vs B.
+4.  Read A vs Control, B vs Control, and A vs B.
 
 ### Validate against a stacked percent chart
 
-1.   Set Baseline on 0 percent.
+1.  Set Baseline on 0 percent.
 
-2.   Set Axis 100% on the 100 percent grid line and keep the default value 100.
+2.  Set Axis 100% on the 100 percent grid line and keep the default value 100.
 
-3.   Set bar tops for Control, A, and B.
+3.  Set bar tops for Control, A, and B.
 
-4.   Read the Baseline-normalized percentages and verify against the y-axis labels.
+4.  Read the Baseline-normalized percentages and verify against the y-axis labels.
 
 ------------------------------------------------------------------------
 
 ## Region of Interest and multi-monitor notes
 
--    **Capture All Monitors** uses `mss.monitors[0]`, which spans all attached displays.
+-   **Capture All Monitors** uses `mss.monitors[0]`, which spans all attached displays.
 
--    **Select ROI** crops the working image. After cropping, previously placed points are cleared because their coordinates no longer match the new image.
+-   **Select ROI** crops the working image. After cropping, previously placed points are cleared because their coordinates no longer match the new image.
 
--    You can always **Reset to Full Capture** to return to the original multi-monitor image.
+-   You can always **Reset to Full Capture** to return to the original multi-monitor image.
 
 ------------------------------------------------------------------------
 
 ## Output
 
--    **Save Annotated** captures the canvas region of the screen and writes a PNG.
+-   **Save Annotated** captures the canvas region of the screen and writes a PNG.
 
--    The image contains your ROI, horizontal guides, point labels, and the overlay panel.
+-   The image contains your ROI, horizontal guides, point labels, and the overlay panel.
 
--    There is no extra padding, so what you see is what you get.
+-   There is no extra padding, so what you see is what you get.
 
 ------------------------------------------------------------------------
 
 ## Troubleshooting
 
--    **Nothing captures on macOS**\
+-   **Nothing captures on macOS**\
     Grant Screen Recording permission to your Python interpreter in System Settings. If you switch interpreters or IDEs, you may need to grant the new one as well.
 
--    **Overlay shows NA everywhere**\
+-   **Overlay shows NA everywhere**\
     Set Baseline first. Then set the bars you want to compare. The overlay fills progressively as soon as the required points exist.
 
--    **Axis span is NA or shows (auto)**\
+-   **Axis span is NA or shows (auto)**\
     Either set Axis at a known tick or let the tool auto-scale. Auto-scale uses the largest available bar height so percentages remain defined.
 
--    **Lines look jagged after resize**\
+-   **Lines look jagged after resize**\
     That is only the display scale. Saving the annotated view captures the canvas as rendered, so you will get exactly what you see.
 
--    **I clicked the wrong place**\
+-   **I clicked the wrong place**\
     Click the same button again and re-click the correct location. Use **Clear Marks** to remove everything.
 
 -   **Some other issue**
@@ -244,11 +248,11 @@ The overlay will show `Axis span (Baseline->Tick) (auto): ...` to indicate that 
 
 ## Design choices
 
--    Horizontal guides instead of verticals because height is the thing being measured.
+-   Horizontal guides instead of verticals because height is the thing being measured.
 
--    Always-visible overlay with progressive NA fills to support partial workflows, for example Baseline plus Control only.
+-   Always-visible overlay with progressive NA fills to support partial workflows, for example Baseline plus Control only.
 
--    Save uses a screen grab of the canvas, not a re-render, to match the on-screen overlay exactly.
+-   Save uses a screen grab of the canvas, not a re-render, to match the on-screen overlay exactly.
 
 -   The whole thought came about while writing something up about the attenuation of hypervitaminosis A in relation to taurine supplementation. I got really annoyed that the authors only included tables and no actual data in their publication. I have seen this a lot in bio based disciplines and moreso in papers before the 2000s. I made this tool for myself and figured I'd get it out on github on the off chance it helps someone else.
 
@@ -258,13 +262,13 @@ The overlay will show `Axis span (Baseline->Tick) (auto): ...` to indicate that 
 
 *Or things that will definitely not happen. A wishlist to Santa Claus if you will. Much of this is easily doable, but the simple implementation I have right now works for my writing/research.*
 
--    Optional second tick so you can set two arbitrary y-axis values and infer both scale and offset.
+-   Optional second tick so you can set two arbitrary y-axis values and infer both scale and offset.
 
--    CSV export of raw pixel heights and computed metrics.
+-   CSV export of raw pixel heights and computed metrics.
 
--    Per-figure presets for color themes.
+-   Per-figure presets for color themes.
 
--    Snap-to-grid assist for noisy scans.
+-   Snap-to-grid assist for noisy scans.
 
 ------------------------------------------------------------------------
 
@@ -282,17 +286,17 @@ Bug reports and pull requests are welcome. If you find a figure that breaks the 
 
 ## Changelog (high level)
 
--    v6: Baseline-normalized percentages, Axis tick with numeric value, safe auto-scale when Axis span is zero or missing, overlay note for auto scale. Actually publish to github.
+-   v6: Baseline-normalized percentages, Axis tick with numeric value, safe auto-scale when Axis span is zero or missing, overlay note for auto scale. Actually publish to github.
 
--    v5: Added optional Axis 100 percent calibration and overlay section for calibrated values.
+-   v5: Added optional Axis 100 percent calibration and overlay section for calibrated values.
 
--    v4: Save captures the exact canvas without gaps, overlay fills progressively with NA, horizontal guides and color scheme.
+-   v4: Save captures the exact canvas without gaps, overlay fills progressively with NA, horizontal guides and color scheme.
 
--    v3: Horizontal guides, overlay moved to upper right, color coding for Baseline, Control, A, B.
+-   v3: Horizontal guides, overlay moved to upper right, color coding for Baseline, Control, A, B.
 
--    v2: Separated Baseline from Control, added A vs Control and B vs Control.
+-   v2: Separated Baseline from Control, added A vs Control and B vs Control.
 
--    v1: Initial capture, ROI, and point placement prototype.
+-   v1: Initial capture, ROI, and point placement prototype.
 
 ------------------------------------------------------------------------
 
@@ -332,9 +336,4 @@ Its close enough to get a rough percentage for sure, most especially when you ar
 
 Study Reference(copied from the paper):
 
-Elfego Galvan, Dillon K. Walker, Sunday Y. Simbo, Ryan Dalton, Kyle Levers,
-Abigail O’Connor, Chelsea Goodenough, Nicholas D. Barringer, Mike Greenwood, Christopher
-Rasmussen, Stephen B. Smith, Steven E. Riechman, James D. Fluckey, Peter S. Murano, Conrad
-P. Earnest & Richard B. Kreider (2016) Acute and chronic safety and efficacy of dose dependent
-creatine nitrate supplementation and exercise performance, Journal of the International
-Society of Sports Nutrition, 13:1, 12, DOI: 10.1186/s12970-016-0124-0
+Elfego Galvan, Dillon K. Walker, Sunday Y. Simbo, Ryan Dalton, Kyle Levers, Abigail O’Connor, Chelsea Goodenough, Nicholas D. Barringer, Mike Greenwood, Christopher Rasmussen, Stephen B. Smith, Steven E. Riechman, James D. Fluckey, Peter S. Murano, Conrad P. Earnest & Richard B. Kreider (2016) Acute and chronic safety and efficacy of dose dependent creatine nitrate supplementation and exercise performance, Journal of the International Society of Sports Nutrition, 13:1, 12, DOI: 10.1186/s12970-016-0124-0
